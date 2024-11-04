@@ -25,7 +25,7 @@ def atualizar(Aluno):
     print("\nAtualizando dados dos alunos.")
     email_aluno = input("Digite o e-mail do aluno que será atualizado: ")
 
-    aluno = session.query(aluno).filter_by(email = email_aluno).first()
+    aluno = session.query(Aluno).filter_by(email = email_aluno).first()
 
     if aluno: 
         aluno.nome = input("Digite seu nome: ")
@@ -42,7 +42,7 @@ def excluir(Aluno):
     print("\nExcluindo os dados de um aluno.")
     email_aluno = input("Digite o e-mail do aluno que será excluído: ")
 
-    aluno = session.query(aluno).filter_by(email = email_aluno).first()
+    aluno = session.query(Aluno).filter_by(email = email_aluno).first()
 
     if aluno:
         session.delete(aluno)
@@ -54,9 +54,9 @@ def excluir(Aluno):
 def consultar_apenas_um(Aluno):
     # R - Read - select - Consulta
     print("Consultando os dados de apenas um aluno.")
-    email_aluno = input("Digite o e-mail do aluno que será excluído: ")
+    email_aluno = input("Digite o e-mail do aluno que deseja consultar: ")
 
-    aluno = session.query(aluno).filter_by(email = email_aluno).first()
+    aluno = session.query(Aluno).filter_by(email = email_aluno).first()
 
     if aluno:
         print(f"{aluno.ra} - {aluno.nome} - {aluno.sobrenome} - {aluno.email} - {aluno.senha}")
@@ -95,10 +95,41 @@ aluno = Aluno(nome=inserir_nome, sobrenome=inserir_sobrenome, email=inserir_emai
 session.add(aluno)
 session.commit()
 
-consulta = consultar(Aluno)
-deletar = excluir(Aluno)
-atualiza = atualizar(Aluno)
-consultar_um = consultar_apenas_um(Aluno)
+while True: 
+    print("\n1. Consultar Usuarios.")
+    print("2. Deletar Usuario.")
+    print("3. Atualizar Usuario.")
+    print("4. Consultar 1 Usuario.")
+    print("5. Sair")
+
+    opcao = int(input("\nInforme a opção desejada: "))
+
+    match(opcao):
+        case 1:
+            consulta = consultar(Aluno)
+            resposta = input("\nDeseja escolher mais uma opção do menu? ")
+            if resposta == "nao":
+                break
+        case 2:
+            deletar = excluir(Aluno)
+            resposta = input("\nDeseja escolher mais uma opção do menu? ")
+            if resposta == "nao":
+                break
+        case 3:
+            atualiza = atualizar(Aluno)
+            resposta = input("\nDeseja escolher mais uma opção do menu? ")
+            if resposta == "nao":
+                break
+        case 4:
+            consultar_um = consultar_apenas_um(Aluno)
+            resposta = input("\nDeseja escolher mais uma opção do menu? ")
+            if resposta == "nao":
+                break
+        case 5:
+            print("\nSair.")
+            break
+        case _:
+            print("\nOpção Invalida. Tente Novamente.")
 
 # Fechando conexão.
 session.close()
